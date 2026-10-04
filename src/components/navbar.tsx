@@ -12,7 +12,7 @@ export function Brand({ footer = false }: { footer?: boolean }) {
 }
 
 export function Navbar() {
-  const pathname = usePathname();
+  const pathname = (usePathname() ?? "/").replace(/\/$/, "") || "/";
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (!open) return;
