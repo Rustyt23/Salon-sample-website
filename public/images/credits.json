@@ -1,0 +1,42 @@
+[
+  {
+    "name": "hero",
+    "credit": "Antonio Friedemann / Unsplash",
+    "source": "https://unsplash.com/photos/woman-with-black-hair-and-red-lipstick-RhfbrAWZgrw"
+  },
+  {
+    "name": "haircut",
+    "credit": "Daniil Kondrashin / Pexels",
+    "source": "https://www.pexels.com/photo/a-woman-at-a-hairdresser-14615063/"
+  },
+  {
+    "name": "color",
+    "credit": "Yovanka Loria Salon / Unsplash",
+    "source": "https://unsplash.com/photos/persons-hand-on-long-wavy-ombre-hair-e900d39_6No"
+  },
+  {
+    "name": "nails",
+    "credit": "Gabriel Puyén / Pexels",
+    "source": "https://www.pexels.com/photo/close-up-photo-of-manicuring-of-nails-6135684/"
+  },
+  {
+    "name": "makeup",
+    "credit": "KATRIN BOLOVTSOVA / Pexels",
+    "source": "https://www.pexels.com/photo/photo-of-woman-holding-make-up-brush-4672727/"
+  },
+  {
+    "name": "interior",
+    "credit": "Giorgio Trovato / Unsplash",
+    "source": "https://unsplash.com/photos/OKXwmdbdXkk"
+  },
+  {
+    "name": "grooming",
+    "credit": "Gustavo Fring / Pexels",
+    "source": "https://www.pexels.com/photo/man-getting-his-hair-cut-at-a-barber-shop-7447132/"
+  },
+  {
+    "name": "beauty",
+    "credit": "Gustavo Fring / Pexels",
+    "source": "https://www.pexels.com/photo/woman-getting-facial-treatment-3985323/"
+  }
+]
