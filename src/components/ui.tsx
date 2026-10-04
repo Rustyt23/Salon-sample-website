@@ -10,9 +10,13 @@ export function WhatsAppButton({ dark = false }: { dark?: boolean }) {
   return <a className={`button ${dark ? "button-outline-light" : "button-outline"}`} href={salon.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (sample number)"><MessageCircle size={18} aria-hidden="true" /> WhatsApp</a>;
 }
 
+export function ScrollTitle({ children }: { children: React.ReactNode }) {
+  return <span className="scroll-title-mask"><span className="scroll-title-content">{children}</span></span>;
+}
+
 export function SectionHeading({ eyebrow, title, description, children, centered = false }: { eyebrow: string; title: React.ReactNode; description?: string; children?: React.ReactNode; centered?: boolean }) {
-  return <div className={`section-heading ${centered ? "section-heading-centered" : ""}`}>
-    <div><p className="eyebrow">{eyebrow}</p><h2>{title}</h2>{description && <p className="section-description">{description}</p>}</div>
+  return <div className={`section-heading ${centered ? "section-heading-centered" : ""}`} data-reveal="heading">
+    <div><p className="eyebrow">{eyebrow}</p><h2><ScrollTitle>{title}</ScrollTitle></h2>{description && <p className="section-description">{description}</p>}</div>
     {children && <div className="section-action">{children}</div>}
   </div>;
 }
@@ -22,9 +26,9 @@ export function PageIntro({ eyebrow, title, description }: { eyebrow: string; ti
 }
 
 export function BookingCTA() {
-  return <section className="booking-cta"><div className="container booking-cta-inner">
+  return <section className="booking-cta"><div className="container booking-cta-inner" data-reveal>
     <Sparkles className="cta-sparkle" strokeWidth={1} aria-hidden="true" />
-    <div><p className="eyebrow">MAKE A LITTLE TIME FOR YOURSELF</p><h2>Your next good hair day<br />starts <em>here.</em></h2><p>A fresh look. A moment to unwind. A little more you.</p></div>
+    <div><p className="eyebrow">MAKE A LITTLE TIME FOR YOURSELF</p><h2><ScrollTitle>Your next good hair day<br />starts <em>here.</em></ScrollTitle></h2><p>A fresh look. A moment to unwind. A little more you.</p></div>
     <div className="cta-actions"><BookingButton light /><span>We can’t wait to see you.</span></div>
   </div></section>;
 }

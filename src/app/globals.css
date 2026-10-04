@@ -504,3 +504,199 @@ button.text-link { border: 0; border-bottom: 1px solid #a99372; background: tran
   .demo-badge, .service-option-price > span, .booking-summary-details dt,
   .booking-summary-details dd > span, .summary-sample-note { font-size: .75rem; }
 }
+
+/* Slow, considered motion complements the salon's cream-and-gold palette. */
+:root {
+  --ease-salon: cubic-bezier(.22, 1, .36, 1);
+  --ease-soft: cubic-bezier(.2, .65, .3, 1);
+}
+
+/* Only the browser enhancement sets a pending state. The HTML is visible by default. */
+[data-reveal][data-motion-state] {
+  transition: opacity .8s var(--ease-soft), transform 1s var(--ease-salon),
+    box-shadow .5s var(--ease-soft), border-color .5s;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal-order="1"] { --reveal-delay: 80ms; }
+[data-reveal-order="2"] { --reveal-delay: 160ms; }
+[data-reveal-order="3"] { --reveal-delay: 240ms; }
+[data-reveal][data-motion-state="pending"] { opacity: 0; transform: translateY(26px); }
+[data-reveal="image"][data-motion-state="pending"] { transform: translateY(30px) scale(.985); }
+[data-reveal][data-motion-state="visible"] { opacity: 1; transform: none; }
+[data-reveal][data-motion-immediate="true"] { transition: none; }
+
+.hero-copy, .hero-visual { animation: none; }
+.hero-copy > .eyebrow { animation: salon-rise .8s .05s var(--ease-salon) both; }
+.hero-title-line { display: block; overflow: hidden; padding: .09em .08em; margin: -.09em -.08em; }
+.hero-title-line > span { display: block; animation: title-unveil 1.05s .12s var(--ease-salon) both; }
+.hero-title-line + .hero-title-line > span { animation-delay: .25s; }
+.hero-description { animation: salon-rise .9s .32s var(--ease-salon) both; }
+.hero-services { animation: salon-rise .9s .4s var(--ease-salon) both; }
+.hero-buttons { animation: salon-rise .9s .48s var(--ease-salon) both; }
+.hero-footnote { animation: salon-rise .9s .56s var(--ease-salon) both; }
+.hero-portrait { animation: portrait-unveil 1.2s .1s var(--ease-salon) both; }
+.hero-portrait .salon-picture { animation: portrait-settle 1.8s .1s var(--ease-salon) both; }
+.hero-studio { animation: salon-rise 1.1s .35s var(--ease-salon) both; }
+.hero-stamp { animation: seal-unveil 1.1s .5s var(--ease-salon) both; }
+.hero-image-note { animation: salon-rise .9s .65s var(--ease-salon) both; }
+.eyebrow-line { transform-origin: left; animation: line-unveil 1s .2s var(--ease-salon) both; }
+
+.page-intro > .eyebrow { animation: salon-rise .8s var(--ease-salon) both; }
+.page-intro h1 { animation: salon-rise 1s .1s var(--ease-salon) both; }
+.page-intro > p:last-child { animation: salon-rise 1s .2s var(--ease-salon) both; }
+
+.button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: background .35s var(--ease-soft), color .35s var(--ease-soft),
+    transform .4s var(--ease-salon), border-color .35s, box-shadow .4s;
+}
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 20%, #c8aa7a25 47%, transparent 75%);
+  transform: translateX(-125%);
+  transition: transform .8s var(--ease-salon);
+}
+.button:focus-visible::before { transform: translateX(125%); }
+.button:active:not(:disabled) { transform: translateY(0) scale(.985); }
+.text-link { transition: color .3s, border-color .3s; }
+.text-link:focus-visible { color: var(--gold); border-color: var(--gold); }
+.salon-image { transition: transform 1.1s var(--ease-salon); }
+.service-image, .gallery-image { transition: box-shadow .6s var(--ease-soft); }
+.service-card h3 a { transition: color .3s; }
+.gallery-preview-icon { transition: opacity .35s, transform .5s var(--ease-salon); }
+.instagram-overlay { transition: opacity .5s var(--ease-soft); }
+.instagram-overlay > svg, .instagram-overlay > span {
+  transform: translateY(10px);
+  transition: transform .6s var(--ease-salon);
+}
+.instagram-post:focus-visible .instagram-overlay > * { transform: translateY(0); }
+.service-image:focus-visible .salon-image, .gallery-image:focus-visible .salon-image,
+.instagram-post:focus-visible .salon-image { transform: scale(1.04); }
+.benefit > span { transition: background .4s, border-color .4s, transform .5s var(--ease-salon); }
+.review-card {
+  transition: opacity .8s var(--ease-soft), transform 1s var(--ease-salon),
+    box-shadow .5s var(--ease-soft), border-color .5s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:hover:not(:disabled)::before { transform: translateX(125%); }
+  .button-dark:hover, .button-light:hover { box-shadow: 0 8px 22px #27262218; }
+  .text-link:hover { border-color: var(--gold); }
+  .service-image:hover .salon-image, .gallery-image:hover .salon-image,
+  .instagram-post:hover .salon-image { transform: scale(1.04); }
+  .instagram-post:hover .instagram-overlay > * { transform: translateY(0); }
+  .benefit:hover > span { background: #ebe2d3; border-color: #c5b08f; transform: rotate(-6deg); }
+  .review-card:hover { box-shadow: 0 14px 34px #2726220d; border-color: #c6b59b; }
+}
+
+@media (min-width: 900px) and (hover: hover) and (pointer: fine) {
+  .hero-portrait .salon-image { translate: 0 var(--portrait-offset, 0px); }
+  .hero-studio { translate: 0 var(--studio-offset, 0px); }
+}
+@media (max-width: 640px) {
+  [data-reveal][data-motion-state] { --reveal-delay: 0ms; transition-duration: .65s, .8s; }
+  [data-reveal][data-motion-state="pending"] { transform: translateY(18px); }
+}
+@media (pointer: coarse) {
+  [data-reveal][data-motion-state] { --reveal-delay: 0ms; }
+}
+
+@keyframes salon-rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes title-unveil {
+  from { opacity: .15; transform: translateY(110%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes portrait-unveil {
+  from { opacity: 0; transform: translateY(24px) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes portrait-settle {
+  from { scale: 1.09; }
+  to { scale: 1.035; }
+}
+@keyframes seal-unveil {
+  from { opacity: 0; transform: rotate(-8deg) scale(.88); }
+  to { opacity: 1; transform: rotate(12deg) scale(1); }
+}
+@keyframes line-unveil {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* The scroll sequence: type lifts into place while photography opens like a curtain. */
+.scroll-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 60; pointer-events: none; }
+.scroll-progress > span {
+  display: block; width: 100%; height: 100%; transform: scaleX(0); transform-origin: left;
+  background: linear-gradient(90deg, #9c7948, #d5b98a, #9c7948);
+}
+.scroll-title-mask { display: block; overflow: hidden; padding: .12em .08em; margin: -.12em -.08em; }
+.scroll-title-content { display: block; transition: transform 1.15s var(--ease-salon) 80ms; }
+[data-motion-state="pending"] .scroll-title-content { transform: translateY(115%); }
+[data-reveal="heading"][data-motion-state="pending"] { opacity: 1; transform: none; }
+[data-reveal="heading"] :is(.eyebrow, .section-description, .why-description, .section-action) {
+  transition: opacity .8s var(--ease-soft), transform 1s var(--ease-salon);
+}
+[data-reveal="heading"] :is(.section-description, .why-description) { transition-delay: 160ms; }
+[data-reveal="heading"] .section-action { transition-delay: 240ms; }
+[data-reveal="heading"][data-motion-state="pending"] :is(.eyebrow, .section-description, .why-description, .section-action) {
+  opacity: 0; transform: translateY(18px);
+}
+.service-card[data-motion-state="pending"] { transform: translateY(46px); }
+.gallery-card[data-motion-state="pending"] { transform: translateY(48px) rotate(-1.2deg); }
+.gallery-card[data-motion-state="pending"][data-reveal-order="1"] { transform: translateY(48px) rotate(1.2deg); }
+:is(.service-image, .gallery-image, .instagram-post, [data-scroll-depth]) .salon-picture {
+  clip-path: inset(0);
+  pointer-events: none;
+  transition: clip-path 1.2s var(--ease-salon), scale 1.5s var(--ease-salon);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-motion-state="pending"] .salon-picture { clip-path: inset(0 0 100% 0); scale: 1.14; }
+[data-scroll-depth] .salon-picture { scale: 1.12; translate: 0 var(--depth-shift, 0px); }
+[data-scroll-depth][data-motion-state="pending"] .salon-picture { scale: 1.22; }
+[data-reveal][data-motion-state][data-motion-immediate="true"],
+[data-reveal][data-motion-immediate="true"] :is(.service-image, .gallery-image, .salon-picture, .scroll-title-content, .eyebrow, .section-description, .why-description, .section-action) {
+  transition: none;
+}
+@media (max-width: 640px) {
+  .service-card[data-motion-state="pending"], .gallery-card[data-motion-state="pending"],
+  .gallery-card[data-motion-state="pending"][data-reveal-order="1"] { transform: translateY(24px); }
+  :is(.service-image, .gallery-image, .instagram-post, [data-scroll-depth]) .salon-picture {
+    transition-duration: .95s, 1.2s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal][data-motion-state], .service-card[data-motion-state="pending"],
+  .gallery-card[data-motion-state="pending"], .gallery-card[data-motion-state="pending"][data-reveal-order="1"] {
+    opacity: 1; transform: none;
+  }
+  .scroll-progress { display: none; }
+  .scroll-title-content, [data-motion-state="pending"] .scroll-title-content,
+  [data-reveal="heading"][data-motion-state="pending"] :is(.eyebrow, .section-description, .why-description, .section-action) {
+    opacity: 1; transform: none;
+  }
+  [data-reveal] .salon-picture { clip-path: none !important; scale: 1 !important; translate: none; }
+  .hero-portrait .salon-image, .hero-studio { translate: none; }
+  .hero-portrait .salon-picture { scale: 1; }
+  .button:hover, .button:active:not(:disabled), .benefit:hover > span,
+  .service-image:hover .salon-image, .service-image:focus-visible .salon-image,
+  .gallery-image:hover .salon-image, .gallery-image:focus-visible .salon-image,
+  .instagram-post:hover .salon-image, .instagram-post:focus-visible .salon-image { transform: none; }
+  .instagram-overlay > * { transform: none; }
+}
+
+@media print {
+  [data-reveal][data-motion-state] { opacity: 1; transform: none; }
+  .scroll-progress { display: none; }
+  [data-reveal] .salon-picture { scale: 1 !important; translate: none; }
+  [data-reveal], [data-reveal] * { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+}

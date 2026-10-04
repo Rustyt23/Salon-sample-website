@@ -1,0 +1,67 @@
+.site-header {
+  transition: background-color .45s ease, border-color .45s ease,
+    box-shadow .5s cubic-bezier(.22, 1, .36, 1);
+}
+
+.site-header[data-scrolled="true"] {
+  background-color: #f6f3eced;
+  border-bottom-color: #bba38240;
+  box-shadow: 0 8px 32px #27262209;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.site-header[data-menu-open="true"] { background-color: var(--background); }
+
+.site-header .desktop-nav a::after {
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+}
+
+.site-header .desktop-nav a:focus-visible::after { transform: scaleX(1); }
+
+.site-header .menu-toggle > svg {
+  animation: navigation-icon-settle .35s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.site-header .mobile-nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 16px 32px #2726220c;
+  animation: navigation-panel-unveil .5s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.site-header .mobile-nav > a,
+.site-header .mobile-nav > p {
+  animation: navigation-item-unveil .65s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.site-header .mobile-nav > .button { animation-delay: .3s; }
+.site-header .mobile-nav > p { animation-delay: .36s; }
+.site-header .mobile-nav > a:focus-visible { animation: none; }
+.site-header .mobile-nav > a[aria-current="page"] { color: var(--gold); }
+
+@keyframes navigation-panel-unveil {
+  from { opacity: .4; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes navigation-item-unveil {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes navigation-icon-settle {
+  from { opacity: .5; transform: rotate(-12deg) scale(.9); }
+  to { opacity: 1; transform: rotate(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header, .site-header .desktop-nav a::after { transition: none; }
+  .site-header .menu-toggle > svg,
+  .site-header .mobile-nav,
+  .site-header .mobile-nav > a,
+  .site-header .mobile-nav > p { animation: none; }
+}

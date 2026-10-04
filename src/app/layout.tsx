@@ -9,6 +9,7 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { MobileActions } from "@/components/mobile-actions";
+import { MotionEffects } from "@/components/motion-effects";
 
 export const metadata: Metadata = {
   title: { default: "Look Good Salon | Hair, Beauty & Grooming in Indore", template: "%s | Look Good Salon" },
@@ -17,5 +18,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" data-scroll-behavior="smooth"><body><a href="#main-content" className="skip-link">Skip to content</a><Navbar /><main id="main-content">{children}</main><Footer /><MobileActions /></body></html>;
+  return <html lang="en" data-scroll-behavior="smooth"><body><a href="#main-content" className="skip-link">Skip to content</a><Navbar /><main id="main-content">{children}</main><Footer /><MobileActions /><MotionEffects /></body></html>;
 }
