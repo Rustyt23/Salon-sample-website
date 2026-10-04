@@ -1,6 +1,6 @@
-# Look Good Salon — Phase 1
+# Look Good Salon — Final Client Demo
 
-A premium, frontend-only salon demo built with Next.js App Router, TypeScript, Tailwind CSS v4, and reusable React components. The app exports static files and does not need a backend.
+A premium frontend-only salon demo built with Next.js App Router, TypeScript, Tailwind CSS v4, and reusable components. The existing Phase 1 design is preserved, with a complete mock booking journey, gallery previews, and mobile quick actions. The site exports static files and needs no backend.
 
 ## Run locally
 
@@ -9,36 +9,44 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3100. For a production preview, run `npm run build` followed by `npm run preview`.
+Open http://localhost:3100.
 
-## Validation
+## Production build and preview
 
 ```sh
 npm run lint
 npm run typecheck
 npm run build
+npm run preview
 ```
 
-The production build exports all pages to `out/`.
+`npm run build` exports all five routes into `out/`. The production preview serves them at http://localhost:3100. Stop the development server first if it is using that port.
 
-## Pages
+## Deploy
 
-- `/` — sticky navigation, hero, eight popular services, gallery/lightbox, benefits, sample reviews, sample Instagram posts, visit details, booking CTA, footer.
-- `/services` — all eight services grouped into hair, grooming, and beauty with sample INR prices and durations.
-- `/gallery` — categorized inspiration gallery, accessible native dialog lightbox with previous/next controls and keyboard navigation, photography credits.
-- `/contact` — supplied location, exact Google Maps Directions link opening in a new tab, sample hours, call and WhatsApp links.
-- `/book` — polished, explicitly unavailable booking shell. No appointment is submitted or saved.
+The demo is published to the existing private Sites project configured in `.openai/hosting.json`. To deploy elsewhere, run `npm ci` followed by `npm run build` and upload the contents of `out/` to any static host. No environment variables, database, or server runtime are required. Preserve the exported directory structure so `/services/`, `/gallery/`, `/contact/`, and `/book/` resolve correctly.
 
-## Business data
+## Booking demo
 
-Edit `src/data/salon.ts` to update the brand, service menu, sample prices, reviews, gallery, contact details, opening hours, and social links. Only the supplied address and Maps destination are real. Images are stock inspiration, not this salon's actual work or interior. Phone and WhatsApp use the intentionally dummy `+91 00000 00000`; replace these before using the website for a real business. The Instagram CTA opens Instagram because no business account was provided.
+`/book/` offers service selection, an India-timezone calendar, sample time slots, customer name and Indian phone validation, an optional note, a running summary, and an animated sample confirmation. Its WhatsApp button prepares the booking details in a message addressed to the dummy number. Nothing is sent automatically, saved, or reserved. Refreshing the page resets the experience. No cookies or browser storage are used for booking details.
 
-Photography lives locally in `public/images/`, with responsive WebP sizes. Creator/source attribution is in `public/images/credits.json`, the reusable config, and the gallery page. Fonts are bundled locally through Fontsource.
+Service cards preselect the relevant service via `/book/?service=haircut` and equivalent links. Some sample time slots are always unavailable, with other disabled slots varying by date. Dates run from the current day in India through the next 60 days.
 
-## Accessibility and responsiveness
+## Data to replace before a real presentation or launch
 
-Semantic sections, accessible navigation, skip link, focus indicators, image alt text, mobile menu with Escape dismissal, dialog focus containment/return, keyboard gallery controls, reduced-motion support, and responsive layouts are included.
+- Phone and WhatsApp: intentionally non-working sample `+91 00000 00000`.
+- Instagram: sample handle and a generic Instagram destination.
+- Service prices, durations, descriptions, opening hours, and fictional sample reviews.
+- Stock inspiration images and sample social posts; these are not actual client work or salon interiors.
 
-## Phase boundary
+Edit `src/data/salon.ts` for business content and `src/data/booking.ts` for mock availability and booking labels. The exact provided Gen-Z Unisex Salon address and Google Maps Directions link are retained. All Directions links open that destination in a new tab.
 
-There is no database, real booking flow, admin dashboard, authentication, WhatsApp API, or payment processing. All booking CTAs lead to the Phase 2 placeholder.
+Photography is bundled locally in responsive WebP sizes, with creator attribution in the gallery and `public/images/credits.json`. Fonts are bundled locally through Fontsource.
+
+## Quality and accessibility
+
+The layout is responsive, with reduced-motion support, visible focus indicators, keyboard-operable service and time choices, inline validation, disabled unavailable options, and an accessible native gallery dialog. The mobile menu contains keyboard focus while open and restores it on Escape. The mobile Book / WhatsApp / Call / Directions bar respects safe-area insets, and booking actions remain visible above it.
+
+## Scope
+
+This final client demo has no backend, database, admin dashboard, authentication, payment flow, WhatsApp API integration, data persistence, or real appointment availability.

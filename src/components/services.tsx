@@ -5,7 +5,8 @@ import { SalonImage } from "./salon-image";
 import { SectionHeading } from "./ui";
 
 export function ServiceCard({ service }: { service: Service }) {
-  return <article className="service-card"><Link href="/book" className="service-image" aria-label={`Explore an appointment for ${service.name}`}><SalonImage name={service.image} alt={service.alt} /><span className="service-image-label">{service.category}</span></Link><div className="service-card-content"><h3><Link href="/book">{service.name}</Link></h3><p>{service.description}</p><div className="service-details"><span>From <strong>{formatPrice(service.price)}</strong></span><span><Clock3 size={14} aria-hidden="true" /> {service.duration}</span></div></div></article>;
+  const bookingHref = `/book?service=${service.id}`;
+  return <article className="service-card"><Link href={bookingHref} className="service-image" aria-label={`Explore an appointment for ${service.name}`}><SalonImage name={service.image} alt={service.alt} /><span className="service-image-label">{service.category}</span></Link><div className="service-card-content"><h3><Link href={bookingHref}>{service.name}</Link></h3><p>{service.description}</p><div className="service-details"><span>From <strong>{formatPrice(service.price)}</strong></span><span><Clock3 size={14} aria-hidden="true" /> {service.duration}</span></div></div></article>;
 }
 
 export function PopularServices() {

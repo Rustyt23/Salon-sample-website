@@ -5,11 +5,12 @@ export const salon = {
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=Gen-Z+unisex+salon%2C+53%2C+near+Mornee+Saree%2C+Old+Agarwal+Nagar%2C+Indore%2C+Madhya+Pradesh+452001&query_place_id=ChIJQbDy0LX9YjkRRxot4DI0P0c",
   phone: "+91 00000 00000",
   phoneHref: "tel:+910000000000",
+  whatsappNumber: "910000000000",
   whatsappUrl: "https://wa.me/910000000000?text=Hello%20Look%20Good%20Salon",
   instagramHandle: "@lookgoodsalon.demo",
   instagramUrl: "https://www.instagram.com/",
   hours: "Monday – Sunday, 10 AM – 8 PM",
-  demoNotice: "A Phase 1 website preview. Prices, reviews, photos, hours and contact details are samples. The visit address and Directions link are real.",
+  demoNotice: "A preview of Look Good Salon. Prices, availability, reviews, photography, hours and contact details are samples. Directions opens the supplied Indore salon location.",
 } as const;
 
 export const navigation = [
@@ -28,20 +29,20 @@ export type Service = {
 };
 
 export const services: Service[] = [
-  { id: "haircut", name: "Haircut", category: "Hair", description: "A fresh shape, a precise cut, and a look that feels like you.", price: 499, duration: "45 min", image: "haircut", alt: "Stylist carefully cutting a woman's hair", tag: "THE EVERYDAY ESSENTIAL" },
+  { id: "haircut", name: "Haircut", category: "Hair", description: "A fresh shape, a precise cut, and a look that feels like you.", price: 499, duration: "45 min", image: "haircut", alt: "Stylist blow-drying a woman's hair for a polished finish", tag: "THE EVERYDAY ESSENTIAL" },
   { id: "styling", name: "Hair Styling", category: "Hair", description: "Soft waves, a sleek finish, or something a little more special.", price: 699, duration: "45 min", image: "hero", alt: "Glossy black hair styled with a soft fringe" },
   { id: "colour", name: "Hair Colour", category: "Hair", description: "Rich colour and beautifully blended tones, made personal.", price: 1999, duration: "120 min", image: "color", alt: "Dimensional balayage with softly styled waves", tag: "A LITTLE TRANSFORMATION" },
   { id: "spa", name: "Hair Spa", category: "Hair", description: "A restorative ritual to nourish your hair and slow your day.", price: 999, duration: "60 min", image: "interior", alt: "Comfortable salon chairs in a bright, relaxing studio" },
   { id: "grooming", name: "Beard & Grooming", category: "Grooming", description: "Clean lines, a considered shape, and a confident finish.", price: 349, duration: "30 min", image: "grooming", alt: "Barber shaping and trimming a man's hair", tag: "REFINED, DOWN TO THE DETAIL" },
   { id: "facial", name: "Facial", category: "Beauty", description: "Thoughtful skin care for a refreshed, naturally radiant glow.", price: 1499, duration: "60 min", image: "beauty", alt: "Gentle facial treatment in a beauty salon" },
-  { id: "makeup", name: "Makeup", category: "Beauty", description: "From understated elegance to your unforgettable occasion.", price: 2499, duration: "75 min", image: "makeup", alt: "Makeup artist applying a carefully blended eye look", tag: "YOUR MOMENT TO SHINE" },
+  { id: "makeup", name: "Makeup", category: "Beauty", description: "From understated elegance to your unforgettable occasion.", price: 2499, duration: "75 min", image: "makeup", alt: "Woman applying makeup with a soft brush", tag: "YOUR MOMENT TO SHINE" },
   { id: "nails", name: "Nail Care", category: "Beauty", description: "Neat shapes, considered colours, and a little finishing touch.", price: 599, duration: "45 min", image: "nails", alt: "Professional applying polish during a manicure" },
 ];
 
 export const gallery = [
   { id: "colour", image: "color", title: "The soft balayage", category: "Colour", alt: "Long wavy hair with blended blonde and brunette balayage" },
-  { id: "haircut", image: "haircut", title: "A fresh perspective", category: "Hair", alt: "A stylist creating a fresh haircut in a salon" },
-  { id: "makeup", image: "makeup", title: "A moment of glamour", category: "Makeup", alt: "An artist applying makeup with a precision brush" },
+  { id: "haircut", image: "haircut", title: "A fresh perspective", category: "Hair", alt: "A stylist blow-drying hair with a round brush" },
+  { id: "makeup", image: "makeup", title: "A moment of glamour", category: "Makeup", alt: "A woman applying makeup with a soft brush" },
   { id: "grooming", image: "grooming", title: "Clean cut. Quiet confidence.", category: "Grooming", alt: "A barber working on a neatly groomed men's haircut" },
   { id: "styling", image: "hero", title: "The glossy finish", category: "Hair", alt: "Woman with glossy black hair and softly styled bangs" },
   { id: "nails", image: "nails", title: "Details, beautifully done", category: "Beauty", alt: "A close-up of a professional manicure" },

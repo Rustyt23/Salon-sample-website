@@ -10,7 +10,7 @@ export function Footer() {
       <div><h3>A little time for you</h3><ul><li><Link href="/book">Book Appointment</Link></li><li><a href={salon.whatsappUrl} target="_blank" rel="noopener noreferrer">WhatsApp <span className="sample-inline">(sample)</span></a></li><li><a href={salon.phoneHref}>Call <span className="sample-inline">(sample)</span></a></li></ul><p className="footer-hours">{salon.hours}<br /><span className="sample-inline">Sample opening hours</span></p></div>
       <div><h3>Come say hello</h3><p className="footer-address">{salon.address}</p><a className="footer-directions" href={salon.mapsUrl} target="_blank" rel="noopener noreferrer"><MapPin size={16} aria-hidden="true" /> Get directions</a></div>
     </div>
-    <div className="footer-bottom"><p>© 2026 {salon.name}. Made for your good days.</p><p>PHASE 1 · DEMO WEBSITE</p></div>
+    <div className="footer-bottom"><p>© 2026 {salon.name}. Made for your good days.</p><p>LOOK GOOD · SALON PREVIEW</p></div>
     <p className="demo-disclaimer">{salon.demoNotice}</p>
   </div></footer>;
 }

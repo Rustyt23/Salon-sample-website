@@ -8,13 +8,14 @@ import "@fontsource/cormorant-garamond/400-italic.css";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { MobileActions } from "@/components/mobile-actions";
 
 export const metadata: Metadata = {
   title: { default: "Look Good Salon | Hair, Beauty & Grooming in Indore", template: "%s | Look Good Salon" },
-  description: "A little time for you. Discover hair, beauty, grooming and makeup at Look Good Salon. Explore our Phase 1 salon website demo in Indore.",
+  description: "A little time for you. Discover hair, beauty, grooming and makeup at Look Good Salon in Indore. Find your next look and explore our appointment demo.",
   icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" data-scroll-behavior="smooth"><body><a href="#main-content" className="skip-link">Skip to content</a><Navbar /><main id="main-content">{children}</main><Footer /></body></html>;
+  return <html lang="en" data-scroll-behavior="smooth"><body><a href="#main-content" className="skip-link">Skip to content</a><Navbar /><main id="main-content">{children}</main><Footer /><MobileActions /></body></html>;
 }
