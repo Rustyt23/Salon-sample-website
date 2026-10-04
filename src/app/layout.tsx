@@ -6,6 +6,9 @@ import "@fontsource/cormorant-garamond/400.css";
 import "@fontsource/cormorant-garamond/500.css";
 import "@fontsource/cormorant-garamond/400-italic.css";
 import "./globals.css";
+import "./premium.css";
+import "./shop.css";
+import { CartProvider } from "@/components/shop/cart-provider";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { MobileActions } from "@/components/mobile-actions";
@@ -18,5 +21,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" data-scroll-behavior="smooth"><body><a href="#main-content" className="skip-link">Skip to content</a><Navbar /><main id="main-content">{children}</main><Footer /><MobileActions /><MotionEffects /></body></html>;
+  return <html lang="en" data-scroll-behavior="smooth"><body><CartProvider><a href="#main-content" className="skip-link">Skip to content</a><Navbar /><main id="main-content">{children}</main><Footer /><MobileActions /><MotionEffects /></CartProvider></body></html>;
 }

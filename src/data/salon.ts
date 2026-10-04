@@ -10,13 +10,14 @@ export const salon = {
   instagramHandle: "@lookgoodsalon.demo",
   instagramUrl: "https://www.instagram.com/",
   hours: "Monday – Sunday, 10 AM – 8 PM",
-  demoNotice: "A preview of Look Good Salon. Prices, availability, reviews, photography, hours and contact details are samples. Directions opens the supplied Indore salon location.",
+  demoNotice: "Demo website — images, prices, reviews and contact details are illustrative.",
 } as const;
 
 export const navigation = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Gallery", href: "/gallery" },
+  { label: "Shop", href: "/shop" },
   { label: "Reviews", href: "/#reviews" },
   { label: "Contact", href: "/contact" },
 ];

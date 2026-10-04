@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { navigation } from "@/data/salon";
-import { BookingButton } from "./ui";
+import { CartTrigger } from "./shop/cart-ui";
 import "./navigation-motion.css";
 
 export function Brand({ footer = false }: { footer?: boolean }) {
@@ -14,9 +14,33 @@ export function Brand({ footer = false }: { footer?: boolean }) {
 
 export function Navbar() {
   const pathname = (usePathname() ?? "/").replace(/\/$/, "") || "/";
+  const isActive = (href: string) => pathname === href || (href === "/shop" && (pathname.startsWith("/shop/") || pathname === "/cart" || pathname === "/checkout"));
   const [open, setOpen] = useState(false);
   const header = useRef<HTMLElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
+  const desktopNav = useRef<HTMLElement>(null);
+  const indicator = useRef<HTMLSpanElement>(null);
+  function positionIndicator(link: HTMLAnchorElement | null) {
+    if (!indicator.current || !desktopNav.current) return;
+    if (!link) { delete desktopNav.current.dataset.indicatorReady; return; }
+    indicator.current.style.width = `${link.offsetWidth}px`;
+    indicator.current.style.transform = `translateX(${link.offsetLeft}px)`;
+    desktopNav.current.dataset.indicatorReady = "true";
+  }
+  function restoreIndicator() {
+    positionIndicator(desktopNav.current?.querySelector<HTMLAnchorElement>("a.active") ?? null);
+  }
+  useEffect(() => {
+    const nav = desktopNav.current;
+    if (!nav) return;
+    const update = () => positionIndicator(nav.querySelector<HTMLAnchorElement>("a.active"));
+    update();
+    const resize = new ResizeObserver(update);
+    resize.observe(nav);
+    let mounted = true;
+    document.fonts.ready.then(() => { if (mounted) update(); });
+    return () => { mounted = false; resize.disconnect(); };
+  }, [pathname]);
   useEffect(() => {
     let frame = 0;
     const updateHeader = () => {
@@ -45,7 +69,7 @@ export function Navbar() {
     const background = [...document.querySelectorAll<HTMLElement>("main, footer, [data-mobile-actions]")].map((element) => ({ element, inert: element.inert }));
     background.forEach(({ element }) => { element.inert = true; });
     header.current?.querySelector<HTMLAnchorElement>("#mobile-navigation a")?.focus({ preventScroll: true });
-    const desktop = window.matchMedia("(min-width: 851px)");
+    const desktop = window.matchMedia("(min-width: 1001px)");
     const handleViewport = () => { if (desktop.matches) setOpen(false); };
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
@@ -62,9 +86,13 @@ export function Navbar() {
 
   return <header ref={header} className="site-header" data-scrolled="false" data-menu-open={open}><div className="container navbar">
     <Brand />
-    <nav className="desktop-nav" aria-label="Main navigation">{navigation.map((item) => <Link key={item.label} href={item.href} className={pathname === item.href ? "active" : ""} aria-current={pathname === item.href ? "page" : undefined}>{item.label}</Link>)}</nav>
-    <div className="nav-actions"><BookingButton /><button ref={toggle} className="menu-toggle" type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button></div>
+    <nav ref={desktopNav} className="desktop-nav" aria-label="Main navigation" onPointerLeave={restoreIndicator} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node)) restoreIndicator(); }}>
+      <span ref={indicator} className="nav-pill" aria-hidden="true" />
+      {navigation.map((item) => <Link key={item.label} href={item.href} className={isActive(item.href) ? "active" : ""} aria-current={isActive(item.href) ? "page" : undefined}
+        onPointerEnter={(event) => positionIndicator(event.currentTarget)} onFocus={(event) => positionIndicator(event.currentTarget)}><span>{item.label}</span></Link>)}
+    </nav>
+    <div className="nav-actions"><Link href="/book" className="button button-dark" aria-label="Book Appointment"><span className="nav-book-full">Book Appointment</span><span className="nav-book-short" aria-hidden="true">Book</span></Link><CartTrigger beforeOpen={() => setOpen(false)} /><button ref={toggle} className="menu-toggle" type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button></div>
   </div>
-  {open && <nav className="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation">{navigation.map((item, index) => <Link key={item.label} href={item.href} style={{ animationDelay: `${80 + index * 45}ms` }} onClick={() => setOpen(false)} aria-current={pathname === item.href ? "page" : undefined}>{item.label}</Link>)}<Link href="/book" className="button button-dark" onClick={() => setOpen(false)}>Book Appointment</Link><p>Hair. Beauty. A little time for you.</p></nav>}
+  {open && <nav className="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation">{navigation.map((item, index) => <Link key={item.label} href={item.href} style={{ animationDelay: `${80 + index * 45}ms` }} onClick={() => setOpen(false)} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</Link>)}<Link href="/cart" onClick={() => setOpen(false)}>Your Bag</Link><Link href="/book" className="button button-dark" onClick={() => setOpen(false)}>Book Appointment</Link><p>Hair. Beauty. A little time for you.</p></nav>}
   </header>;
 }

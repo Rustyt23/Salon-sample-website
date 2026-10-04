@@ -7,7 +7,7 @@ export function BookingButton({ light = false, className = "" }: { light?: boole
 }
 
 export function WhatsAppButton({ dark = false }: { dark?: boolean }) {
-  return <a className={`button ${dark ? "button-outline-light" : "button-outline"}`} href={salon.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (sample number)"><MessageCircle size={18} aria-hidden="true" /> WhatsApp</a>;
+  return <a className={`button ${dark ? "button-outline-light" : "button-outline"}`} href={salon.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><MessageCircle size={18} aria-hidden="true" /> WhatsApp</a>;
 }
 
 export function ScrollTitle({ children }: { children: React.ReactNode }) {
@@ -28,7 +28,7 @@ export function PageIntro({ eyebrow, title, description }: { eyebrow: string; ti
 export function BookingCTA() {
   return <section className="booking-cta"><div className="container booking-cta-inner" data-reveal>
     <Sparkles className="cta-sparkle" strokeWidth={1} aria-hidden="true" />
-    <div><p className="eyebrow">MAKE A LITTLE TIME FOR YOURSELF</p><h2><ScrollTitle>Your next good hair day<br />starts <em>here.</em></ScrollTitle></h2><p>A fresh look. A moment to unwind. A little more you.</p></div>
+    <div><p className="eyebrow">MAKE A LITTLE TIME FOR YOURSELF</p><h2><ScrollTitle>Your next good hair day<br />starts <em>here.</em></ScrollTitle></h2><p>Choose your service. We’ll take care of the details.</p></div>
     <div className="cta-actions"><BookingButton light /><span>We can’t wait to see you.</span></div>
   </div></section>;
 }
