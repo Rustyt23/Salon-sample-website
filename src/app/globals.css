@@ -535,7 +535,7 @@ button.text-link { border: 0; border-bottom: 1px solid #a99372; background: tran
 .hero-buttons { animation: salon-rise .9s .48s var(--ease-salon) both; }
 .hero-footnote { animation: salon-rise .9s .56s var(--ease-salon) both; }
 .hero-portrait { animation: portrait-unveil 1.2s .1s var(--ease-salon) both; }
-.hero-portrait .salon-picture { animation: portrait-settle 18s .1s linear both; }
+.hero-portrait .salon-picture { animation: portrait-settle 28s .1s linear both; }
 .hero-studio { animation: salon-rise 1.1s .35s var(--ease-salon) both; }
 .hero-stamp { animation: seal-unveil 1.1s .5s var(--ease-salon) both; }
 .hero-image-note { animation: salon-rise .9s .65s var(--ease-salon) both; }
@@ -613,12 +613,12 @@ button.text-link { border: 0; border-bottom: 1px solid #a99372; background: tran
   to { opacity: 1; transform: translateY(0); }
 }
 @keyframes portrait-unveil {
-  from { opacity: 0; transform: translateY(18px) scale(.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; clip-path: inset(0 0 12% 0); transform: translateY(15px) scale(.98); }
+  to { opacity: 1; clip-path: inset(0); transform: translateY(0) scale(1); }
 }
 @keyframes portrait-settle {
-  from { scale: 1; }
-  to { scale: 1.045; }
+  from { scale: 1.025; }
+  to { scale: 1.06; }
 }
 @keyframes seal-unveil {
   from { opacity: 0; transform: rotate(-8deg) scale(.88); }

@@ -228,3 +228,29 @@ body:has(.cart-drawer[open]) { overflow: hidden; }
   .shop-filters { padding-bottom: 16px; }
 }
 @media (prefers-reduced-motion:reduce) { .product-surface[data-tilt="true"],.product-surface:active,.product-image-link:hover .product-photo,.buy-now:hover svg { transform: none; }.cart-drawer { transition: none; }.product-photo,.cart-count { animation: none; } }
+
+/* Keep the initial server-rendered drawer entirely absent from layout and paint. */
+.cart-drawer:not([open]) { display: none; }
+.cart-drawer::backdrop { opacity: 0; transition: opacity .26s ease; }
+.cart-drawer[data-state="open"]::backdrop { opacity: 1; }
+@starting-style { .cart-drawer[data-state="open"]::backdrop { opacity: 0; } }
+.cart-count { animation: none; }
+.cart-count[data-ready="false"] { opacity: 0; }
+.quantity-control { transition: border-color .2s, background .2s; }
+.quantity-control:focus-within { border-color: var(--gold); }
+.cart-line .quantity-control button { width: 32px; min-height: 40px; }
+.quantity-control button { transition: background .2s, color .2s; }
+.quantity-control button:active:not(:disabled) { background: #ded0b9; color: #75572e; }
+.product-actions .button { transition: background .3s, color .3s, transform .3s; }
+.product-actions .product-added:disabled { opacity: 1; cursor: default; }
+.product-added > svg { animation: added-check-settle .3s ease both; }
+@keyframes added-check-settle { from { opacity: 0; transform: scale(.8); } to { opacity: 1; transform: none; } }
+.empty-cart,.cart-page-layout { animation: cart-content-settle .24s ease both; }
+@keyframes cart-content-settle { from { opacity: .35; } to { opacity: 1; } }
+.cart-loading { min-height: 320px; padding-top: 20px; }
+.cart-loading-row { display: flex; gap: 18px; padding-block: 20px; border-bottom: 1px solid var(--line); }
+.cart-loading-row > span { width: 80px; height: 85px; background: #e9e2d6; border-radius: 3px; flex-shrink: 0; }
+.cart-loading-row > div { flex: 1; padding-top: 8px; }
+.cart-loading-row > div > span { display: block; height: 10px; border-radius: 3px; background: #e9e2d6; width: 70%; margin-bottom: 15px; }
+.cart-loading-row > div > span:nth-child(2) { width: 48%; }
+.cart-loading-row > div > span:nth-child(3) { width: 30%; }

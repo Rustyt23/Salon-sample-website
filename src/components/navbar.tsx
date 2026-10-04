@@ -8,8 +8,8 @@ import { navigation } from "@/data/salon";
 import { CartTrigger } from "./shop/cart-ui";
 import "./navigation-motion.css";
 
-export function Brand({ footer = false }: { footer?: boolean }) {
-  return <Link href="/" className={`brand ${footer ? "brand-footer" : ""}`} aria-label="Look Good Salon home"><span>look good<span className="brand-dot">.</span></span><span className="brand-subtitle">S A L O N</span></Link>;
+export function Brand({ footer = false, onNavigate }: { footer?: boolean; onNavigate?: () => void }) {
+  return <Link href="/" className={`brand ${footer ? "brand-footer" : ""}`} aria-label="Look Good Salon home" onClick={onNavigate}><span>look good<span className="brand-dot">.</span></span><span className="brand-subtitle">S A L O N</span></Link>;
 }
 
 export function Navbar() {
@@ -85,13 +85,13 @@ export function Navbar() {
   }, [open]);
 
   return <header ref={header} className="site-header" data-scrolled="false" data-menu-open={open}><div className="container navbar">
-    <Brand />
+    <Brand onNavigate={() => setOpen(false)} />
     <nav ref={desktopNav} className="desktop-nav" aria-label="Main navigation" onPointerLeave={restoreIndicator} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node)) restoreIndicator(); }}>
       <span ref={indicator} className="nav-pill" aria-hidden="true" />
       {navigation.map((item) => <Link key={item.label} href={item.href} className={isActive(item.href) ? "active" : ""} aria-current={isActive(item.href) ? "page" : undefined}
         onPointerEnter={(event) => positionIndicator(event.currentTarget)} onFocus={(event) => positionIndicator(event.currentTarget)}><span>{item.label}</span></Link>)}
     </nav>
-    <div className="nav-actions"><Link href="/book" className="button button-dark" aria-label="Book Appointment"><span className="nav-book-full">Book Appointment</span><span className="nav-book-short" aria-hidden="true">Book</span></Link><CartTrigger beforeOpen={() => setOpen(false)} /><button ref={toggle} className="menu-toggle" type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button></div>
+    <div className="nav-actions"><Link href="/book" className="button button-dark" aria-label="Book Appointment" onClick={() => setOpen(false)}><span className="nav-book-full">Book Appointment</span><span className="nav-book-short" aria-hidden="true">Book</span></Link><CartTrigger beforeOpen={() => setOpen(false)} /><button ref={toggle} className="menu-toggle" type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button></div>
   </div>
   {open && <nav className="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation">{navigation.map((item, index) => <Link key={item.label} href={item.href} style={{ animationDelay: `${80 + index * 45}ms` }} onClick={() => setOpen(false)} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</Link>)}<Link href="/cart" onClick={() => setOpen(false)}>Your Bag</Link><Link href="/book" className="button button-dark" onClick={() => setOpen(false)}>Book Appointment</Link><p>Hair. Beauty. A little time for you.</p></nav>}
   </header>;

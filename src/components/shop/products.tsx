@@ -17,7 +17,7 @@ export function ProductActions({ product, quantity = 1 }: { product: Product; qu
   const [added, setAdded] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
-  return <div className="product-actions"><button className={`button button-dark ${added ? "product-added" : ""}`} type="button" onClick={() => { add(product.id, quantity); setAdded(true); if (timer.current) clearTimeout(timer.current); timer.current = setTimeout(() => setAdded(false), 1500); }}>{added ? <Check size={15} aria-hidden="true" /> : <ShoppingBag size={15} aria-hidden="true" />}{added ? "Added" : "Add to Cart"}</button><button type="button" className="buy-now" onClick={() => { add(product.id, quantity, false); router.push("/checkout"); }}>Buy Now <ArrowRight size={14} aria-hidden="true" /></button></div>;
+  return <div className="product-actions"><button className={`button button-dark ${added ? "product-added" : ""}`} type="button" disabled={added} onClick={() => { if (!add(product.id, quantity)) return; setAdded(true); if (timer.current) clearTimeout(timer.current); timer.current = setTimeout(() => setAdded(false), 1500); }}>{added ? <Check size={15} aria-hidden="true" /> : <ShoppingBag size={15} aria-hidden="true" />}{added ? "Added" : "Add to Cart"}</button><button type="button" className="buy-now" onClick={() => { add(product.id, quantity, false); router.push("/checkout"); }}>Buy Now <ArrowRight size={14} aria-hidden="true" /></button></div>;
 }
 export function Price({ product }: { product: Product }) {
   return <span className="product-price"><strong>{formatPrice(product.price)}</strong>{product.originalPrice && <del aria-label={`Original price ${formatPrice(product.originalPrice)}`}>{formatPrice(product.originalPrice)}</del>}</span>;
@@ -36,7 +36,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
       frame.current = 0;
       const element = surface.current;
       if (!element) return;
-      const rect = element.getBoundingClientRect();
+      const rect = (element.parentElement ?? element).getBoundingClientRect();
       const x = Math.max(0, Math.min(1, (coordinates.current.x - rect.left) / rect.width));
       const y = Math.max(0, Math.min(1, (coordinates.current.y - rect.top) / rect.height));
       element.style.setProperty("--product-x", `${(0.5 - y) * 5}deg`);

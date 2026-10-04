@@ -9,8 +9,20 @@ import { useCart } from "./cart-provider";
 import { ProductPhoto } from "./product-photo";
 
 export function CartTrigger({ beforeOpen }: { beforeOpen?: () => void }) {
-  const { count, openCart } = useCart();
-  return <button className="cart-trigger" type="button" aria-label={`Open cart, ${count} ${count === 1 ? "item" : "items"}`} onClick={() => { beforeOpen?.(); openCart(); }}><ShoppingBag size={20} strokeWidth={1.5} aria-hidden="true" /><span className="cart-count" key={count} aria-hidden="true">{count > 99 ? "99+" : count}</span></button>;
+  const { count, openCart, ready } = useCart();
+  const badge = useRef<HTMLSpanElement>(null);
+  const previous = useRef({ count, ready });
+  useEffect(() => {
+    const changed = previous.current.ready && ready && previous.current.count !== count;
+    previous.current = { count, ready };
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!changed || preference.matches || !badge.current?.animate) return;
+    const animation = badge.current.animate([{ opacity: .65, transform: "scale(.86)" }, { opacity: 1, transform: "scale(1)" }], { duration: 280, easing: "cubic-bezier(.22,1,.36,1)" });
+    const stop = () => { if (preference.matches) animation.cancel(); };
+    preference.addEventListener("change", stop);
+    return () => { animation.cancel(); preference.removeEventListener("change", stop); };
+  }, [count, ready]);
+  return <button className="cart-trigger" type="button" aria-label={ready ? `Open cart, ${count} ${count === 1 ? "item" : "items"}` : "Open cart"} onClick={() => { beforeOpen?.(); openCart(); }}><ShoppingBag size={20} strokeWidth={1.5} aria-hidden="true" /><span ref={badge} className="cart-count" data-ready={ready} aria-hidden="true">{ready ? count > 99 ? "99+" : count : ""}</span></button>;
 }
 export function QuantityControl({ quantity, onChange, name }: { quantity: number; onChange: (quantity: number) => void; name: string }) {
   return <div className="quantity-control" aria-label={`Quantity for ${name}`}><button type="button" disabled={quantity <= 1} aria-label={`Decrease ${name} quantity`} onClick={() => onChange(quantity - 1)}><Minus size={14} aria-hidden="true" /></button><output aria-live="polite" aria-label={`${name} quantity`}>{quantity}</output><button type="button" disabled={quantity >= MAX_QUANTITY} aria-label={`Increase ${name} quantity`} onClick={() => onChange(quantity + 1)}><Plus size={14} aria-hidden="true" /></button></div>;
@@ -32,8 +44,11 @@ export function WhatsAppOrder({ items, href, onClick }: { items: CartItem[]; hre
 export function EmptyCart({ onNavigate }: { onNavigate?: () => void }) {
   return <div className="empty-cart"><ShoppingBag size={40} strokeWidth={1} aria-hidden="true" /><h2>A little care<br />for your shelf.</h2><p>Your bag is waiting for its first favourite.</p><Link href="/shop" className="button button-dark" onClick={onNavigate}>Explore the collection <ArrowRight size={16} aria-hidden="true" /></Link></div>;
 }
+export function CartLoading() {
+  return <div className="cart-loading" role="status" aria-label="Loading your bag"><span className="sr-only">Loading your bag…</span><div className="cart-loading-row" aria-hidden="true"><span /><div><span /><span /><span /></div></div><div className="cart-loading-row" aria-hidden="true"><span /><div><span /><span /><span /></div></div></div>;
+}
 export function CartDrawer() {
-  const { items, count, totals, drawerOpen, closeCart, ready } = useCart();
+  const { items, count, totals, drawerOpen, closeCart, ready, message } = useCart();
   const dialog = useRef<HTMLDialogElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -43,16 +58,17 @@ export function CartDrawer() {
       if (!element.open) { element.showModal(); closeButton.current?.focus({ preventScroll: true }); }
       return;
     }
+    if (!element.open) return;
     const timer = window.setTimeout(() => element.close(), window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 260);
     return () => window.clearTimeout(timer);
   }, [drawerOpen]);
   return <dialog ref={dialog} className="cart-drawer" data-state={drawerOpen ? "open" : "closed"} aria-labelledby="cart-drawer-title" onCancel={(event) => { event.preventDefault(); closeCart(); }} onClick={(event) => { if (event.target === event.currentTarget) closeCart(); }}><div className="cart-drawer-inner">
     <header className="cart-drawer-header"><div><p className="eyebrow">YOUR LITTLE CARE EDIT</p><h2 id="cart-drawer-title">Your bag <span>({count})</span></h2></div><button ref={closeButton} type="button" className="icon-button" onClick={closeCart} aria-label="Close cart"><X size={22} aria-hidden="true" /></button></header>
-    <div className="cart-drawer-content">{!ready ? <p>Loading your bag…</p> : items.length ? <><p className="delivery-note">{totals.subtotal >= 1499 ? "Complimentary demo delivery unlocked." : `Add ${formatPrice(1499 - totals.subtotal)} for complimentary demo delivery.`}</p><CartLines items={items} onNavigate={closeCart} /><p className="quantity-note">Demo limit: 20 of each product.</p></> : <EmptyCart onNavigate={closeCart} />}</div>
+    <div className="cart-drawer-content">{!ready ? <CartLoading /> : items.length ? <><p className="delivery-note">{totals.subtotal >= 1499 ? "Complimentary demo delivery unlocked." : `Add ${formatPrice(1499 - totals.subtotal)} for complimentary demo delivery.`}</p><CartLines items={items} onNavigate={closeCart} /><p className="quantity-note">Demo limit: 20 of each product.</p></> : <EmptyCart onNavigate={closeCart} />}</div><span className="sr-only" role="status">{message}</span>
     {!!items.length && <div className="cart-drawer-footer"><Totals totals={totals} /><Link href="/checkout" className="button button-dark" onClick={closeCart}>Continue to checkout <ArrowRight size={16} aria-hidden="true" /></Link><div className="cart-drawer-secondary"><Link href="/cart" className="text-link" onClick={closeCart}>View your bag</Link><a href={orderWhatsAppUrl(items)} target="_blank" rel="noopener noreferrer" onClick={closeCart}>Order on WhatsApp ↗</a></div><p className="shop-fineprint">Frontend demo · no payments or deliveries.</p></div>}
   </div></dialog>;
 }
 export function CartPage() {
   const { items, count, totals, ready } = useCart();
-  return <div className="container shop-page"><div className="shop-page-heading"><p className="eyebrow">THE LOOK GOOD SHOP</p><h1>Your <em>care edit.</em></h1><p>{count ? `${count} ${count === 1 ? "essential" : "essentials"}, ready for your shelf.` : "A little everyday luxury starts here."}</p></div>{!ready ? <div className="cart-loading" role="status">Loading your bag…</div> : !items.length ? <EmptyCart /> : <div className="cart-page-layout"><div><CartLines items={items} /><Link href="/shop" className="text-link">← Continue shopping</Link><p className="quantity-note">Demo limit: 20 of each product.</p></div><aside className="order-summary"><p className="eyebrow">THE DETAILS</p><h2>Order summary</h2><Totals totals={totals} /><p className="shop-fineprint">Delivery is ₹99, or complimentary on orders of ₹1,499 and above. Illustrative pricing only.</p><Link className="button button-dark" href="/checkout">Continue to checkout <ArrowRight size={16} aria-hidden="true" /></Link><WhatsAppOrder items={items} /><p className="shop-fineprint">This checkout is a demo. No payment is collected and no delivery is arranged.</p></aside></div>}</div>;
+  return <div className="container shop-page"><div className="shop-page-heading"><p className="eyebrow">THE LOOK GOOD SHOP</p><h1>Your <em>care edit.</em></h1><p>{count ? `${count} ${count === 1 ? "essential" : "essentials"}, ready for your shelf.` : "A little everyday luxury starts here."}</p></div>{!ready ? <CartLoading /> : !items.length ? <EmptyCart /> : <div className="cart-page-layout"><div><CartLines items={items} /><Link href="/shop" className="text-link">← Continue shopping</Link><p className="quantity-note">Demo limit: 20 of each product.</p></div><aside className="order-summary"><p className="eyebrow">THE DETAILS</p><h2>Order summary</h2><Totals totals={totals} /><p className="shop-fineprint">Delivery is ₹99, or complimentary on orders of ₹1,499 and above. Illustrative pricing only.</p><Link className="button button-dark" href="/checkout">Continue to checkout <ArrowRight size={16} aria-hidden="true" /></Link><WhatsAppOrder items={items} /><p className="shop-fineprint">This checkout is a demo. No payment is collected and no delivery is arranged.</p></aside></div>}</div>;
 }

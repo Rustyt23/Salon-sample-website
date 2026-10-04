@@ -72,7 +72,7 @@ export function MotionEffects() {
       const amount = scrollRange > 0 ? Math.min(Math.max(window.scrollY / scrollRange, 0), 1) : 0;
       if (progressBar) progressBar.style.transform = `scaleX(${amount.toFixed(4)})`;
       if (hero && heroVisible && desktop.matches) {
-        hero.style.setProperty("--portrait-offset", `${(distance * 0.025).toFixed(2)}px`);
+        hero.style.setProperty("--portrait-offset", `${Math.min(distance * 0.018, 10).toFixed(2)}px`);
         hero.style.setProperty("--studio-offset", `${(-distance * 0.018).toFixed(2)}px`);
       }
       scenes.forEach(({ element, bounds }) => {

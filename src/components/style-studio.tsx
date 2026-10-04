@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Check, Sparkles } from "lucide-react";
 import { studioCategories, studioLooks, type StudioCategory } from "@/data/looks";
@@ -40,9 +40,10 @@ export function StyleStudio() {
         <p>A new cut. A different shade.<br />Find a direction that feels like you.</p>
       </div>
       <div className="studio-layout">
-        <div className="studio-frame" data-reveal>
-          {previous !== null && <LookPortrait key={`old-${revision}`} tile={previous} alt="" decorative className="studio-photo studio-photo-out" />}
+        <div className="studio-frame" data-reveal style={{ "--studio-tone": look.swatch ?? "#d8b888" } as CSSProperties}>
+          {previous !== null && <LookPortrait key={`old-${revision}`} tile={previous} alt="" decorative className="studio-photo studio-photo-out" onAnimationEnd={() => setPrevious(null)} />}
           <LookPortrait key={`new-${revision}`} tile={look.tile} alt={`Illustrative model preview: ${look.name}`} className={`studio-photo ${revision > 0 ? "studio-photo-in" : ""}`} />
+          {revision > 0 && <span key={`highlight-${revision}`} className="studio-highlight" aria-hidden="true" />}
           <span className="studio-edition">LOOK GOOD / THE EDIT</span>
           <div className="studio-photo-caption"><span>{category.toUpperCase()} / {String(look.tile + 1).padStart(2, "0")}</span><p>{look.name}</p></div>
           <span className="studio-frame-corner" aria-hidden="true" />
@@ -50,6 +51,7 @@ export function StyleStudio() {
         <div className="studio-controls" data-reveal data-reveal-order="1">
           <p className="studio-step"><span>01</span> CHOOSE YOUR DIRECTION</p>
           <div className="studio-tabs" role="tablist" aria-label="Style Studio categories">
+            <span className="studio-tab-pill" aria-hidden="true" style={{ transform: `translateX(${studioCategories.indexOf(category) * 100}%)` }} />
             {studioCategories.map((item, index) => <button key={item} id={`studio-tab-${item.toLowerCase()}`} ref={(element) => { tabs.current[index] = element; }}
               type="button" role="tab" aria-selected={category === item} aria-controls="studio-options" tabIndex={category === item ? 0 : -1}
               onClick={() => selectCategory(item)} onKeyDown={(event) => moveTab(event, index)}>{item}</button>)}
@@ -64,7 +66,7 @@ export function StyleStudio() {
               </label>)}
             </fieldset>
           </div>
-          <div className="studio-look-copy" aria-live="polite" aria-atomic="true"><h3>{look.name}</h3><p>{look.description}</p><span>{look.detail}</span></div>
+          <div className="studio-look-copy" aria-live="polite" aria-atomic="true"><div key={revision} className={revision > 0 ? "studio-copy-enter" : ""}><h3>{look.name}</h3><p>{look.description}</p><span>{look.detail}</span></div></div>
           <Link className="button button-light studio-book" href={`/book?service=${look.service}&look=${encodeURIComponent(look.name)}`}>Book This Look <ArrowUpRight size={19} aria-hidden="true" /></Link>
           <p className="studio-consultation"><Sparkles size={14} aria-hidden="true" /> Your stylist will tailor the look to you.</p>
         </div>

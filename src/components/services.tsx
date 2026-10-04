@@ -27,11 +27,11 @@ export function ServiceCard({ service, motionIndex = 0 }: { service: Service; mo
       frame.current = 0;
       const element = surface.current;
       if (!element) return;
-      const bounds = element.getBoundingClientRect();
+      const bounds = (element.parentElement ?? element).getBoundingClientRect();
       const x = Math.max(0, Math.min((pointer.current.x - bounds.left) / bounds.width, 1));
       const y = Math.max(0, Math.min((pointer.current.y - bounds.top) / bounds.height, 1));
-      element.style.setProperty("--tilt-x", `${(0.5 - y) * 7}deg`);
-      element.style.setProperty("--tilt-y", `${(x - 0.5) * 7}deg`);
+      element.style.setProperty("--tilt-x", `${(0.5 - y) * 5.5}deg`);
+      element.style.setProperty("--tilt-y", `${(x - 0.5) * 5.5}deg`);
       element.style.setProperty("--spot-x", `${x * 100}%`);
       element.style.setProperty("--spot-y", `${y * 100}%`);
     });

@@ -8,7 +8,7 @@ import { CartDrawer } from "./cart-ui";
 type CartContextValue = {
   items: CartItem[]; ready: boolean; count: number; totals: ReturnType<typeof calculateTotals>;
   drawerOpen: boolean; message: string; openCart: () => void; closeCart: () => void;
-  add: (id: string, quantity?: number, reveal?: boolean) => void;
+  add: (id: string, quantity?: number, reveal?: boolean) => boolean;
   setQuantity: (id: string, quantity: number) => void; remove: (id: string) => void; clear: () => void;
 };
 const CartContext = createContext<CartContextValue | null>(null);
@@ -22,13 +22,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   });
   function add(id: string, quantity = 1, reveal = true) {
     const product = products.find((entry) => entry.id === id);
-    if (!product) return;
+    if (!product) return false;
     const current = getCartSnapshot().items;
     const existing = current.find((line) => line.productId === id);
     const next = Math.min(MAX_QUANTITY, (existing?.quantity ?? 0) + quantity);
     writeCart(existing ? current.map((line) => line.productId === id ? { ...line, quantity: next } : line) : [...current, { productId: id, quantity: next }]);
     setMessage(next === existing?.quantity ? `Demo limit: ${MAX_QUANTITY} of each product.` : `${product.name} added to your bag.`);
     if (reveal) setDrawerOpen(true);
+    return next > (existing?.quantity ?? 0);
   }
   function remove(id: string) {
     writeCart(getCartSnapshot().items.filter((line) => line.productId !== id));
